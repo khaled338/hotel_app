@@ -80,7 +80,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `UserHotel` (`id` INTEGER, `name` TEXT, `selectedDate` INTEGER, `numberOfPerson` INTEGER, `numberOfDays` INTEGER, `price` INTEGER, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `UserHotel` (`id` INTEGER, `name` TEXT, `selectedDate` TEXT, `numberOfPerson` INTEGER, `numberOfDays` INTEGER, `price` INTEGER, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -152,7 +152,7 @@ class _$HotelDao extends HotelDao {
             row['id'] as int,
             row['name'] as String,
             row['numberOfPerson'] as int,
-            row['selectedDate'] as int,
+            row['selectedDate'] as String,
             row['numberOfDays'] as int,
             row['price'] as int));
   }

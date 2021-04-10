@@ -5,7 +5,7 @@ class UserHotel {
   @primaryKey
   final int id;
   final String name;
-  final int selectedDate ;
+  final String selectedDate ;
   final int numberOfPerson ;
   final int numberOfDays ;
   final int price ;

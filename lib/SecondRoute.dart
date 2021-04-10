@@ -15,27 +15,27 @@ import 'package:floor/floor.dart';
 import 'DAO.dart';
 
 
-class SecondRoute extends StatelessWidget {
-  final HotelDao dao ;
-  SecondRoute ({this.dao}) ;
+// class SecondRoute extends StatelessWidget {
+//   final HotelDao dao ;
+//   SecondRoute ({this.dao}) ;
+//
+//   @override
+//
+//   Widget build(BuildContext context) {
+//
+//     return MaterialApp(
+//       title: 'Flutter Demo',
+//       theme: ThemeData(
+//
+//         primarySwatch: Colors.blue,
+//       ),
+//       home: MyHomePage1(title: 'Flutter Demo Home Page',),
+//     );
+//   }
+//   }
 
-  @override
-
-  Widget build(BuildContext context) {
-
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage1(title: 'Flutter Demo Home Page',),
-    );
-  }
-  }
-
-class MyHomePage1 extends StatefulWidget {
-  MyHomePage1({Key key, this.title,}) : super(key: key);
+class SecondRoute extends StatefulWidget {
+  SecondRoute({Key key, this.title,}) : super(key: key);
   final String title;
 
 
@@ -45,7 +45,7 @@ class MyHomePage1 extends StatefulWidget {
 
 }
 
-class _MyHomePageState1 extends State<MyHomePage1> {
+class _MyHomePageState1 extends State<SecondRoute> {
       //Your code here
 
    
@@ -139,12 +139,23 @@ class _MyHomePageState1 extends State<MyHomePage1> {
 
 
 
+void saveRecord()async
+{
+  final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
 
-       Future<List<UserHotel>> retrieveUsers() async {
-         final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
+  final hotelDao = database.hotelDao;
+  final hotel = UserHotel(DateTime.now().millisecondsSinceEpoch,_itemSelected.name,
+      _value2,_selectedDate,_value,(_itemSelected.price*_value2*_value));
 
-         return await database.hotelDao.findAllData();
-       }
+  await hotelDao.insertUserHotel(hotel);
+  print('data saved');
+
+}
+       // Future<List<UserHotel>> retrieveUsers() async {
+       //   final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
+       //
+       //   return await database.hotelDao.findAllData();
+       // }
       @override
       Widget build(BuildContext context) {
 
@@ -282,66 +293,65 @@ class _MyHomePageState1 extends State<MyHomePage1> {
               child: Text('Save', style: TextStyle(fontSize: 20.0),),
               color: Colors.blueAccent,
               textColor: Colors.white,
-              onPressed: () {
-                setState(() {
-                  return toMap();
-                });
+              onPressed: ()async {
+await saveRecord();
+Navigator.pop(context,'Yep!');
               },
 
             ),
           ),
-          Column(
-              children:toMap
-              .map((element) => Card(
-                child: Column(
-                  children: <Widget>[
-                    Text(element,
-                        style: TextStyle(color: Colors.deepPurple))
-                  ],
-                ),
-              ))
-                  .toListView.builder()),
+          // Column(
+          //     children:toMap
+          //     .map((element) => Card(
+          //       child: Column(
+          //         children: <Widget>[
+          //           Text(element,
+          //               style: TextStyle(color: Colors.deepPurple))
+          //         ],
+          //       ),
+          //     ))
+          //         .toListView.builder()),
 
 
-              FutureBuilder(
-                future: this.retrieveUsers(),
-                builder: (BuildContext context, AsyncSnapshot<List<UserHotel>> snapshot) {
-                  if (snapshot.hasData) {
-                    return ListView.builder(
-                      itemCount: snapshot.data?.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Dismissible(
-                          direction: DismissDirection.endToStart,
-                          background: Container(
-                            color: Colors.red,
-                            alignment: Alignment.centerRight,
-                            padding: EdgeInsets.symmetric(horizontal: 10.0),
-                            child: Icon(Icons.delete_forever),
-                          ),
-                          key: ValueKey<int>(snapshot.data[index].id),
-                          onDismissed: (DismissDirection direction) async {
-                            await this
-                                .database
-                                .hotelDao
-                                .deleteUserHotel;
-                            setState(() {
-                              snapshot.data.remove(snapshot.data[index]);
-                            });
-                          },
-                          child: Card(
-                              child: ListTile(
-                                contentPadding: EdgeInsets.all(8.0),
-                                title: Text(snapshot.data[index].name),
-                                subtitle: Text(snapshot.data[index].numberOfDays.toString()),
-                              )),
-                        );
-                      },
-                    );
-                  } else {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                },
-              ),
+              // FutureBuilder(
+              //   future: this.retrieveUsers(),
+              //   builder: (BuildContext context, AsyncSnapshot<List<UserHotel>> snapshot) {
+              //     if (snapshot.hasData) {
+              //       return ListView.builder(
+              //         itemCount: snapshot.data?.length,
+              //         itemBuilder: (BuildContext context, int index) {
+              //           return Dismissible(
+              //             direction: DismissDirection.endToStart,
+              //             background: Container(
+              //               color: Colors.red,
+              //               alignment: Alignment.centerRight,
+              //               padding: EdgeInsets.symmetric(horizontal: 10.0),
+              //               child: Icon(Icons.delete_forever),
+              //             ),
+              //             key: ValueKey<int>(snapshot.data[index].id),
+              //             onDismissed: (DismissDirection direction) async {
+              //               await this
+              //                   .database
+              //                   .hotelDao
+              //                   .deleteUserHotel;
+              //               setState(() {
+              //                 snapshot.data.remove(snapshot.data[index]);
+              //               });
+              //             },
+              //             child: Card(
+              //                 child: ListTile(
+              //                   contentPadding: EdgeInsets.all(8.0),
+              //                   title: Text(snapshot.data[index].name),
+              //                   subtitle: Text(snapshot.data[index].numberOfDays.toString()),
+              //                 )),
+              //           );
+              //         },
+              //       );
+              //     } else {
+              //       return Center(child: CircularProgressIndicator());
+              //     }
+              //   },
+              // ),
         ]
 
       ),
