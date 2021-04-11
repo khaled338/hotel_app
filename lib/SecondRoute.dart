@@ -9,7 +9,7 @@ import 'package:hotel_reservation/Entity.dart';
 import 'package:hotel_reservation/database.dart';
 import 'package:hotel_reservation/main.dart';
 import 'package:intl/intl.dart';
-
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:floor/floor.dart';
 
 import 'DAO.dart';
